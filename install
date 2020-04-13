@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"``
+cd $script_dir
+
+# Install docker-compose definition in system folder
+install_dir=/opt/jenkins-ci
+
+[ ! -d "$install_dir" ] && sudo mkdir $install_dir
+sudo cp $script_dir/docker-compose.yml $install_dir/
+sudo chown -R $USER:$USER $install_dir
+
+# Setup jenkins service
+service_dir=/etc/systemd/system/
+service_name=jenkins-docker.service
+
+cp $script_dir/$service_name.template $script_dir/$service_name
+sed -i "s/User=/User=${USER}/g" "$script_dir/$service_name"
+sudo cp $script_dir/$service_name $service_dir
+sudo systemctl enable $service_name
+sudo systemctl daemon-reload
+sudo systemctl start $service_name

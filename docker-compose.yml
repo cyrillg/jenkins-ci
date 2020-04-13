@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  docker:
+    image: docker:dind
+    container_name: jenkins-docker
+    privileged: true
+    restart: "on-failure"
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+      - "${HOME}:/home"
+    ports:
+      - "8100:8100"
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    networks:
+      - jenkins
+
+  jenkins:
+    image: jenkinsci/blueocean
+    container_name: jenkins
+    privileged: true
+    restart: "on-failure"
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+      - "${HOME}:/home"
+    ports:
+      - "8080:8080"
+    environment:
+      DOCKER_TLS_VERIFY: 1
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_HOST: tcp://docker:2376
+    networks:
+      - jenkins
+
+networks:
+  jenkins:
+    name: jenkins
+
+volumes:
+  jenkins-docker-certs:
+    name: jenkins-docker-certs
+  jenkins-data:
+    name: jenkins-data

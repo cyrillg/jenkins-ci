@@ -1,0 +1,14 @@
+[Unit]
+Description=Jenkins CI server in docker
+Requires=docker.service
+After=docker.service
+
+[Service]
+User=
+WorkingDirectory=/opt/jenkins-ci/
+ExecStart=/usr/local/bin/docker-compose up
+ExecStop=/usr/local/bin/docker-compose down
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
