@@ -16,7 +16,7 @@ services:
       - jenkins
 
   jenkins:
-    image: jenkinsci-compose
+    image: cyrillg/jenkins-ci
     container_name: jenkins
     privileged: true
     restart: "on-failure"
