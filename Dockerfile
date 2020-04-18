@@ -10,6 +10,8 @@ RUN apk update \
     gcc \
     libc-dev \
     make \
+    nodejs \
+    npm \
   && rm -rf /var/cache/apk/*
 RUN pip install docker-compose
 
