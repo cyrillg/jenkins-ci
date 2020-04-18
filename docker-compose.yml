@@ -8,7 +8,6 @@ services:
     volumes:
       - jenkins-docker-certs:/certs/client
       - jenkins-data:/var/jenkins_home
-      - "${HOME}:/home"
     ports:
       - "8100:8100"
     environment:
@@ -17,14 +16,13 @@ services:
       - jenkins
 
   jenkins:
-    image: jenkinsci/blueocean
+    image: jenkinsci-compose
     container_name: jenkins
     privileged: true
     restart: "on-failure"
     volumes:
       - jenkins-docker-certs:/certs/client
       - jenkins-data:/var/jenkins_home
-      - "${HOME}:/home"
     ports:
       - "8080:8080"
     environment:
